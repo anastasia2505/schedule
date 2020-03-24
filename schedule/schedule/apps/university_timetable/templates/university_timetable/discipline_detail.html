@@ -1,0 +1,34 @@
+{% extends 'university_timetable/index_base.html'%}
+
+{% block title %}
+    <h1>Дисциплина</h1>
+    <br>
+{% endblock %}
+
+{% block content %}
+
+    <h2>
+        {{discipline.Name}}
+        <br>
+    </h2>
+    <br>
+    <h6>Академические планы</h6>
+    <table cellspacing="5" cellpadding="10" border="1">
+         {% for plan in discipline.academicplan.all %}
+           <tr><td>{{plan}}</td></tr>
+        {% endfor %}
+
+    </table>
+
+    <br>
+    <h6>Группы</h6>
+     <table cellspacing="5" cellpadding="10" border="1">
+        {% for group in discipline.groups.all %}
+            <tr>
+                <td>{{group.GroupName}}  {{group.plane}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+{% endblock%}

@@ -1,0 +1,18 @@
+{% extends 'university_timetable/index_base.html'%}
+
+{% block title %}
+    <h1>Корпус</h1> 
+{% endblock %}
+
+{% block content %}    
+        <h2>
+            {{cur_build.NumberOfBuilding}} 
+        </h2>
+        <p>{{cur_build.Address}}</p>
+        
+        <h3>Аудитории</h3>
+        {% for room in lrooms_list %}
+            <p>{{room.LectureRoomNumber}}</p>
+        {% endfor %}
+    
+{% endblock%}

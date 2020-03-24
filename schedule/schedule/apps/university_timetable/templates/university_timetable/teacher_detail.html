@@ -1,0 +1,110 @@
+{% extends 'university_timetable/index_base.html'%}
+
+{% block title %}
+    <h1>Преподаватель</h1>
+    <br>
+{% endblock %}
+
+{% block content %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+        $('.spoiler-body').hide();
+        $('.spoiler-title').click(function(){
+            $(this).next().toggle()});
+        });
+    </script>
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+      <div class="container-fluid">
+        <a href="{% url 'university_timetable:teacher' cur_teacher.PersonnelNumber %}" class="navbar-brand"><img src="img/teacher.jpg"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a href="#" class="nav-link spoiler-title">Дисциплины</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link">Группы</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link">Пары</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link">Аудитории</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+
+
+    <div class="spoiler-body">
+        <h6>Дисциплины</h6>
+        <table cellspacing="5" cellpadding="10" border="1">
+            {% for discipline in list_disciplines %}
+                <tr>
+                    <td>{{discipline.Name}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
+
+
+    <h2>
+        {{cur_teacher.FirstName}}
+        <br>
+        {{cur_teacher.LastName}}
+    </h2>
+    <p>{{cur_teacher.TeacherPosition}}</p>
+
+    <br>
+    <h6>Дисциплины</h6>
+    <table cellspacing="5" cellpadding="10" border="1">
+        {% for discipline in list_disciplines %}
+            <tr>
+                <td>{{discipline.Name}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <h6>Группы</h6>
+     <table cellspacing="5" cellpadding="10" border="1">
+        {% for group in list_groups %}
+            <tr>
+                <td>{{group.GroupName}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <h6>Пары</h6>
+    <table cellspacing="5" cellpadding="10" border="1">
+        {% for pair in list_pairs %}
+            <tr>
+                <td>{{pair.PairNumber}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <h6>Аудитории</h6>
+    <table cellspacing="5" cellpadding="10" border="1">
+        {% for lectureroom in list_lecturerooms %}
+            <tr>
+                <td>{{lectureroom.LectureRoomNumber}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock%}
