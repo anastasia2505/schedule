@@ -25,7 +25,13 @@ sys.path.insert(0,os.path.join(PROGECT_ROOT,'apps'))
 try:
     from .secret_key import SECRET_KEY
 except ImportError:
-    pass
+    from django.utils.crypto import get_random_string
+    chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+
+    with open(os.path.join(BASE_DIR,'schedule/secret_key.py'), 'w') as file_handler:
+        file_handler.write('SECRET_KEY = "{}"'.format(get_random_string(50, chars)))
+
+    from .secret_key import SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
