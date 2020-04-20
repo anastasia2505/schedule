@@ -1,4 +1,4 @@
 /.env/
-/.vscode/
 /schedule/schedule/secret_key.py
+/**/__pycache__/
 
