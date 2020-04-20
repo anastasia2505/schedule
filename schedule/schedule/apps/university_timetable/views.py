@@ -10,8 +10,8 @@ from django.shortcuts import get_object_or_404
 
 from university_timetable.forms import *
 from django.forms.models import modelform_factory
-
-#from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie, csrf_exempt
+#from django.core.context_processors import csrf
 
 class GroupsView(View):
 
@@ -23,8 +23,8 @@ class GroupsView(View):
 
 class TeacherView(View):
 
-    @staticmethod
-    def get(request, teacher_id=None):
+    
+    def get(self, request, teacher_id=None):
         if teacher_id:
             try:
                 # cur_teacher = Teacher.objects.get(pk=teacher_id)
@@ -107,12 +107,12 @@ class TeacherView(View):
                 teacher.save(force_update=True)
             return HttpResponseRedirect(reverse('university_timetable:teacher', args=(teacher_id,)))
 
-            
-    @staticmethod
-    def delete(request, pk):
+    #@ensure_csrf_cookie
+    #@csrf_exempt  
+    def delete(self, request, teacher_id):
 
         try:
-            person=Teacher.objects.get(pk=pk)
+            person=Teacher.objects.get(pk=teacher_id)
             person.delete()
         except ObjectDoesNotExist:
             raise Http404("Преподаватель не найден")
@@ -121,8 +121,7 @@ class TeacherView(View):
 
 class DisciplineView(View):
 
-    @staticmethod
-    def get(request, discipline_id=None):
+    def get(self, request, discipline_id=None):
         if discipline_id:
             try:
                 cur_discipline = Discipline.objects.get(pk=discipline_id)
@@ -150,13 +149,14 @@ class DisciplineView(View):
             
             return HttpResponseRedirect(reverse('university_timetable:disciplines'))
     
-    @staticmethod
-    def delete(request, discipline_id):
+    #@ensure_csrf_cookie
+    #@staticmethod
+    def delete(self, request, discipline_id):
         try:
             Discipline.objects.get(pk=discipline_id).delete()
         except Discipline.DoesNotExist:
             raise Http404('Дисциплина не найдена')
-        return HttpResponseRedirect(reverse('university_timetable:disciplines'))
+        return render(request, 'university_timetable/discipline/index_disciplines.html', context={'disciplines_list': Discipline.objects.all()})
 
     
     @staticmethod

@@ -19,7 +19,7 @@ urlpatterns = [
     
 
     path('disciplines/', views.DisciplineView.as_view(), name = 'disciplines'),
-    path('disciplines/<int:discipline_id>', views.DisciplineView.as_view(), name='discipline'),
+    path('disciplines/<int:discipline_id>/', views.DisciplineView.as_view(), name='discipline'),
     path('disciplines/create', views.DisciplineView.create, name='discipline_create'),
     path('disciplines/<int:discipline_id>/update', views.DisciplineView.update, name='discipline_update'),
 
