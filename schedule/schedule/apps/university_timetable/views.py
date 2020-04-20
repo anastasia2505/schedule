@@ -1,53 +1,183 @@
 from django.shortcuts import render
-from django.http import HttpResponse, Http404
-from .models import *
-from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from university_timetable.models import *
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
-def groups(request):
-
-    groups_list=GroupInInstitute.objects.all()
-    return render(request,'university_timetable/index_groups.html',context={'groups_list':groups_list})
-
-def teachers(request):
-    try:
-        teachers_list = Teacher.objects.all()
-        #disc={cur_teacher.PersonnelNumber: list(cur_teacher.disciplines.all().order_by('Name')) for cur_teacher in teachers_list}
-    except Teacher.DoesNotExist:
-        raise Http404("Opps")
-    return render(request, 'university_timetable/index_teachers.html', context={'teaches_list': teachers_list,})
-
-def teacher(request, teacher_id):
-    try:
-        cur_teacher = Teacher.objects.get(pk=teacher_id)
-        list_disciplines = list(cur_teacher.disciplines.all().order_by('Name'))
-        list_groups = list(cur_teacher.groups.all().order_by('GroupName'))
-        list_pairs = list(cur_teacher.pairs.all().order_by('PairNumber'))
-        list_lecturerooms = list(cur_teacher.lecturerooms.all().order_by('LectureRoomNumber'))
-        #list_buildings = list(temp.NumberOfBuilding.objects.order_by('NumberOfBuilding').distinct(
-        #    'NumberOfBuilding') for temp in cur_teacher.lecturerooms.all())
-
-    except Teacher.DoesNotExist:
-        raise Http404("Преподаватель не найден")
-    return render(request, 'university_timetable/teacher_detail.html',
-            context={'cur_teacher': cur_teacher,
-            'list_disciplines': list_disciplines,
-            'list_groups': list_groups,
-            'list_pairs': list_pairs,
-            'list_lecturerooms':list_lecturerooms})
+from django.views import View
+from django.shortcuts import get_object_or_404
 
 
-def disciplines(request):
-    disciplines_list=Discipline.objects.all()
-    return render(request,'university_timetable/index_disciplines.html',context={'disciplines_list':disciplines_list})
+from university_timetable.forms import *
+from django.forms.models import modelform_factory
 
-def discipline(request, discipline_id):
-    try:
-        cur_discipline = Discipline.objects.get(pk=discipline_id)
-        academ_plan = cur_discipline.academicplan
-    except Discipline.DoesNotExist:
-        raise Http404("Дисциплина не найдена")
-    return render(request, 'university_timetable/discipline_detail.html', context={'discipline':cur_discipline, 'academ_plan': academ_plan})
+#from django.views.decorators.csrf import csrf_protect
 
+class GroupsView(View):
+
+    def get(self, request,):
+        groups_list=GroupInInstitute.objects.all().order_by('GroupName')
+        return render(request,'university_timetable/group/index_groups.html',context={'groups_list':groups_list})
+
+
+
+class TeacherView(View):
+
+    @staticmethod
+    def get(request, teacher_id=None):
+        if teacher_id:
+            try:
+                # cur_teacher = Teacher.objects.get(pk=teacher_id)
+                # list_disciplines = list(cur_teacher.disciplines.all().order_by('Name'))
+                # list_groups = list(cur_teacher.groups.all().order_by('GroupName'))
+                # list_pairs = list(cur_teacher.pairs.all().order_by('PairNumber'))
+                # list_lecturerooms = list(cur_teacher.lecturerooms.all().order_by('LectureRoomNumber'))
+                #list_buildings = list(temp.NumberOfBuilding.objects.order_by('NumberOfBuilding').distinct(
+                #    'NumberOfBuilding') for temp in cur_teacher.lecturerooms.all())
+                teacher=get_object_or_404(Teacher, pk=teacher_id)
+                form=TeacherForm(instance=teacher)
+            except Teacher.DoesNotExist:
+                raise Http404("Преподаватель не найден")
+            return render(request, 'university_timetable/teacher/teacher_detail.html',
+                    context={'form': form,
+                            'cur_teacher': teacher})
+        else:
+            teachers_list = Teacher.objects.all()
+            return render(request, 'university_timetable/teacher/index_teachers.html', context={'teaches_list': teachers_list,})
+
+    @staticmethod
+    def create(request):
+        if request.method=="GET":
+            form=TeacherForm()
+            return render(request, 'university_timetable/teacher/create.html', context={'form':form,})
+        
+        if request.method=="POST":
+            data_form=TeacherForm(request.POST)
+
+            if data_form.is_valid():
+                teacher=Teacher.objects.create(
+                    FirstName=request.POST.get('FirstName'),
+                    Patronymic=request.POST.get('Patronymic'),
+                    LastName=request.POST.get('LastName'),
+                    TeacherPosition=request.POST.get('TeacherPosition'),
+                    PhoneNumber=request.POST.get('PhoneNumber'),
+                    Email=request.POST.get('Email'),
+                    Department=request.POST.get('Department'),
+                )
+                teacher.disciplines.add(request.POST.get('disciplines'))
+                teacher.groups.add(request.POST.get('groups'))
+                teacher.lecturerooms.add(request.POST.get('lecturerooms'))
+                teacher.calendars.add(request.POST.get('calendars'))
+                teacher.pairs.add(request.POST.get('pairs'))
+                teacher.save()
+            return HttpResponseRedirect(reverse('university_timetable:teachers'))
+
+    @staticmethod
+    def update(request, teacher_id):
+        
+        if request.method=='GET':
+            cur_teacher=get_object_or_404(Teacher, pk=teacher_id)
+            form=TeacherForm(instance=cur_teacher)
+            return render(request, 'university_timetable/teacher/update.html',
+                    context={'form': form,
+                            'cur_teacher': cur_teacher})
+
+        if request.method=='POST':
+            data_form=TeacherForm(request.POST)
+            
+            #product.name = 'Name changed again'
+            #product.save(update_fields=['name'])
+            if data_form.is_valid():
+                teacher=Teacher.objects.get(pk=teacher_id)
+                
+                teacher.FirstName=request.POST.get('FirstName')
+                teacher.Patronymic=request.POST.get('Patronymic')
+                teacher.LastName=request.POST.get('LastName')
+                teacher.TeacherPosition=request.PUPOSTT.get('TeacherPosition')
+                teacher.PhoneNumber=request.POST.get('PhoneNumber')
+                teacher.Email=request.POST.get('Email')
+                teacher.Department=request.POST.get('Department')
+                
+                teacher.disciplines.add(request.POST.get('disciplines'))
+                teacher.groups.add(request.POST.get('groups'))
+                teacher.lecturerooms.add(request.POST.get('lecturerooms'))
+                teacher.calendars.add(request.POST.get('calendars'))
+                teacher.pairs.add(request.POST.get('pairs'))
+
+                teacher.save(force_update=True)
+            return HttpResponseRedirect(reverse('university_timetable:teacher', args=(teacher_id,)))
+
+            
+    @staticmethod
+    def delete(request, pk):
+
+        try:
+            person=Teacher.objects.get(pk=pk)
+            person.delete()
+        except ObjectDoesNotExist:
+            raise Http404("Преподаватель не найден")
+
+        return render(request, 'university_timetable/teacher/index_teachers.html', context={'teacher_list': Teacher.objects.all()})
+
+class DisciplineView(View):
+
+    @staticmethod
+    def get(request, discipline_id=None):
+        if discipline_id:
+            try:
+                cur_discipline = Discipline.objects.get(pk=discipline_id)
+                disciplineform=DisciplineForm(instance=cur_discipline)
+
+            except Discipline.DoesNotExist:
+                raise Http404("Дисциплина не найдена")
+            return render(request, 'university_timetable/discipline/discipline_detail.html', context={'form':disciplineform, 'cur_discipline':cur_discipline})
+        else:
+            disciplines_list=Discipline.objects.all()
+            return render(request,'university_timetable/discipline/index_disciplines.html',context={'disciplines_list':disciplines_list})
+    
+    @staticmethod
+    def create(request):
+        if request.method=='GET':
+            form=DisciplineForm()
+            return render(request, 'university_timetable/discipline/create.html', context={'form':form,})
+
+        if request.method=='POST':
+            form=DisciplineForm(request.POST)
+            if form.is_valid():
+                discipline=Discipline.objects.create(Name=request.POST.get('Name'),
+                                                AcademicHours=request.POST.get('AcademicHours'),
+                                                IntermediateCertificationForm=request.POST.get('IntermediateCertificationForm'))
+            
+            return HttpResponseRedirect(reverse('university_timetable:disciplines'))
+    
+    @staticmethod
+    def delete(request, discipline_id):
+        try:
+            Discipline.objects.get(pk=discipline_id).delete()
+        except Discipline.DoesNotExist:
+            raise Http404('Дисциплина не найдена')
+        return HttpResponseRedirect(reverse('university_timetable:disciplines'))
+
+    
+    @staticmethod
+    def update(request, discipline_id):
+        if request.method=='GET':
+            cur_discipline=get_object_or_404(Discipline, pk=discipline_id)
+            form=DisciplineForm(instance=cur_discipline)
+            return render(request, 'university_timetable/discipline/update.html', context={'form':form,
+                                                                                            'cur_discipline': cur_discipline})
+        if request.method=='PUT':
+            discipline=get_object_or_404(Discipline, pk=discipline_id)
+            data_form=DisciplineForm(initial=request.PUT, instance=discipline)
+            
+            if data_form.is_valid():
+                discipline.Name=request.PUT.get('Name')
+                discipline.AcademicHours=request.PUT.get('AcademicHours')
+                discipline.IntermediateCertificationForm=request.PUT.get('IntermediateCertificationForm')
+                discipline.save()
+                
+            #TODO:исправить переадресацию
+            return HttpResponseRedirect(reverse('university_timetable:discipline', args=(discipline_id,)))
 
 
 def building_rooms(request, numb):
@@ -62,18 +192,32 @@ def building_rooms(request, numb):
     finally:
         return render(request,'university_timetable/index_building_rooms.html',context=context)
 
-def lecturerooms(request):
-    lecturerooms_list=LectureRoom.objects.all()
-    return render(request,'university_timetable/index_lecturerooms.html',context={'lecturerooms_list':lecturerooms_list})
+class LectureroomView(View):
 
-#шаблона нет
-def pairs(request):
-    pairs_list=Pair.objects.all()
-    return render(request,'university_timetable/index_pairs.html',context={'pairs_list':pairs_list})
+    def get(self, request, lectureroom_id=None):
+        if lectureroom_id:
+            pass
+        else:    
+            lecturerooms_list=LectureRoom.objects.all()
+            return render(request,'university_timetable/index_lecturerooms.html',context={'lecturerooms_list':lecturerooms_list})
 
-def calendars(request):
-    calendars_list=Calendar.objects.all()
-    return render(request, 'university_timetable/index_calendars.html', context={'calendars_list': calendars_list})
+class PairView(View):
+    #шаблона нет
+    def get(self, request, pair_id=None):
+        if pair_id:
+            pass
+        else:
+            pairs_list=Pair.objects.all()
+            return render(request,'university_timetable/index_pairs.html',context={'pairs_list':pairs_list})
+
+class CalendarView(View):
+
+    def get(self, request, calendar_id=None):
+        if calendar_id:
+            pass
+        else:        
+            calendars_list=Calendar.objects.all()
+            return render(request, 'university_timetable/index_calendars.html', context={'calendars_list': calendars_list})
 
 
 def my_custom_page_not_found_view(request, exception):

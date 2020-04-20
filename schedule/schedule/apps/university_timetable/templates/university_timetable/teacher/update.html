@@ -1,0 +1,45 @@
+{% extends 'university_timetable/teacher/teacher_detail.html'%}
+
+
+{% block form_title %}<form action="{% url 'university_timetable:teacher_update' cur_teacher.PersonnelNumber %}" method="post">{% endblock%}
+    
+{% block buttons %}
+<input class="btn-outline-dark btn-sm" type="submit" value="Изменить">
+<input class="btn-outline-dark btn-sm" type="reset" value="Очистить">
+
+    <script>
+        function changePressed(teacher){
+       
+            console.log("pressed change button");
+            console.log(teacher);
+            $.ajax({
+                method: 'PUT',
+                url: '/university_timetable/teachers/'+teacher.PersonnelNumber+'/',
+                data: { pk: teacher.PersonnelNumber,
+                        csrfmiddlewaretoken='tpfBUM6pg63rTyHh236QTfvijEQ1g1YwbywV2IZp6jaawOK9P67C9lSYQJexReJ8',
+                        FirstName=teacher.},
+                statusCode: { 
+                    404: function(){ 
+                        alert( "page not found" );
+                        console.log("page not found");
+                        },
+                    403: function(){ 
+                        alert( "permission denied" );
+                        console.log("permission denied");
+                        },
+                    500: function(){
+                        alert("bad request");
+                        console.log("bad request");
+                    } 
+                },
+                success: function() {
+                    alert('Success!');
+                },
+                headers: { 'X_METHODOVERRIDE': 'PUT' }
+            });
+            console.log('exit from function');
+        }
+       
+    </script>
+{% endblock %}
+

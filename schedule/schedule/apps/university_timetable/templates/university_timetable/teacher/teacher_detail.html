@@ -1,0 +1,129 @@
+{% extends 'university_timetable/index_base.html'%}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+        $('.spoiler-body').hide();
+        $('.spoiler-title').click(function(){
+            $(this).next().toggle()});
+        });
+    </script>
+
+    {% comment %} 
+        <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+        <div class="container-fluid">
+            <a href="{% url 'university_timetable:teacher' cur_teacher.PersonnelNumber %}" class="navbar-brand"><img src="img/teacher.jpg"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                <a href="#" class="nav-link spoiler-title">Дисциплины</a>
+                </li>
+
+                <li class="nav-item">
+                <a href="#" class="nav-link">Группы</a>
+                </li>
+
+                <li class="nav-item">
+                <a href="#" class="nav-link">Пары</a>
+                </li>
+
+                <li class="nav-item">
+                <a href="#" class="nav-link">Аудитории</a>
+                </li>
+            </ul>
+            </div>
+        </div>
+        </nav> 
+        <div class="spoiler-body">
+            <h6>Дисциплины</h6>
+            <table cellspacing="5" cellpadding="10" border="1">
+                {% for discipline in list_disciplines %}
+                    <tr>
+                        <td>{{discipline.Name}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <h2>
+            {{cur_teacher.FirstName}}
+            <br>
+            {{cur_teacher.LastName}}
+        </h2>
+        <p>{{cur_teacher.TeacherPosition}}</p>
+
+        <br>
+        <h6>Дисциплины</h6>
+        <table cellspacing="5" cellpadding="10" border="1">
+            {% for discipline in list_disciplines %}
+                <tr>
+                    <td>{{discipline.Name}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <br>
+        <h6>Группы</h6>
+        <table cellspacing="5" cellpadding="10" border="1">
+            {% for group in list_groups %}
+                <tr>
+                    <td>{{group.GroupName}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <br>
+        <h6>Пары</h6>
+        <table cellspacing="5" cellpadding="10" border="1">
+            {% for pair in list_pairs %}
+                <tr>
+                    <td>{{pair.PairNumber}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <br>
+        <h6>Аудитории</h6>
+        <table cellspacing="5" cellpadding="10" border="1">
+            {% for lectureroom in list_lecturerooms %}
+                <tr>
+                    <td>{{lectureroom.LectureRoomNumber}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endcomment %}
+
+     <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <a href="{% url 'university_timetable:teachers' %}" class="btn btn-outline-dark btn-sm" role="button" >
+                        Назад 
+                </a>
+            </div>
+            <div class="col-6">Преподаватель</div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+    
+        {% block form_title %}<form action="{% url 'university_timetable:teacher' cur_teacher.PersonnelNumber %}"  method="get">{%endblock%}
+            {% csrf_token %}
+            <div class ="form-group row">            
+                <table>
+                <div class="col-sm-10">
+                    {{form.as_table}}
+                </div>
+                </table>
+            </div>
+            
+            {% block buttons %}{% endblock %}
+
+        </form>
+    </div>
+{% endblock%}

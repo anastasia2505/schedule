@@ -1,0 +1,7 @@
+{% extends 'university_timetable/discipline/discipline_detail.html'%}
+
+{% block form_title %}<form action="{% url 'university_timetable:discipline_create' %}" method="post">{% endblock %}
+
+{% block button %}<input class="btn-outline-dark btn-sm" type="submit" value="Создать">
+<input class="btn-outline-dark btn-sm" type="reset" value="Очистить">{% endblock %}
+

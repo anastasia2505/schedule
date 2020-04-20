@@ -1,0 +1,10 @@
+{% extends 'university_timetable/teacher/teacher_detail.html'%}
+
+
+{% block form_title %}<form action="{% url 'university_timetable:teacher_create' %}" method="post">{% endblock%}
+    
+{% block buttons %}
+<input class="btn-outline-dark btn-sm" type="submit" value="Создать">
+<input class="btn-outline-dark btn-sm" type="reset" value="Очистить">
+{% endblock %}
+
