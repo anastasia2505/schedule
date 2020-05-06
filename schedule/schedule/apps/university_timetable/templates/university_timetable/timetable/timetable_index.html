@@ -1,0 +1,112 @@
+{% extends 'university_timetable/index_base.html'%}
+
+{% block title %}
+{% endblock %}
+
+
+{% block content %}
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+
+    </script>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="{% url 'university_timetable:start_page'%}">Расписание</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsDefault" aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'university_timetable:teachers'%}">Преподаватели <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'university_timetable:groups'%}">Группы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'university_timetable:disciplines'%}">Дисциплины</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{% url 'university_timetable:lecturerooms'%}" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Аудитории</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+    </nav>
+
+    <br />
+    <br />
+    <br />
+    <h1  align="center">Расписание</h1>
+    <hr noshade="noshade" width="80%" color="#d0d0d0" />
+
+
+
+<div class="container-fluid">
+    <table class = "table table-bordered table-hover">
+<thead class = "thead-light">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Понедельник</th>
+      <th scope="col">Вторник</th>
+      <th scope="col">Среда</th>
+      <th scope="col">Четверг</th>
+      <th scope="col">Пятница</th>
+      <th scope="col">Суббота</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+
+    </tr>
+    <tr>
+
+    </tr>
+    <tr>
+
+    </tr>
+  </tbody>
+    </table>
+</div>
+
+
+
+
+{% endblock%}
