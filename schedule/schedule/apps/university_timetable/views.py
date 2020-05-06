@@ -222,3 +222,6 @@ class CalendarView(View):
 
 def my_custom_page_not_found_view(request, exception):
     render(request, 'university_timetable/404.html')
+
+def start_page(request):
+     return render(request, 'university_timetable/timetable/timetable_index.html')
