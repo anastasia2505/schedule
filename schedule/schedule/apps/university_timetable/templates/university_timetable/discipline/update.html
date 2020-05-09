@@ -1,8 +1,7 @@
 {% extends 'university_timetable/discipline/discipline_detail.html'%}
 
 
-{% block form_title %}<form action="{% url 'university_timetable:discipline_create' %}" method="post">{% endblock%}
-
+{% block form_title %}<form  id="updateForm" action="{% url 'university_timetable:discipline_update' discipline.Id %}" method="post">{% endblock%}
 {% block form %}
     <div class ="form-group row">            
         <table>
@@ -12,8 +11,9 @@
         </table>
     </div>
 {% endblock %}
-
 {% block buttons %}
-<input class="btn-outline-dark btn-sm" type="submit" value="Создать">
+
+
+<button id="update-btn" class="btn-outline-dark btn-sm">Изменить</button>
 {% endblock %}
 

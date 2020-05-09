@@ -1,0 +1,18 @@
+{% extends 'university_timetable/group/group_detail.html'%}
+
+
+{% block form_title %}<form  id="updateForm" action="{% url 'university_timetable:group_update' group.Id %}" method="post">{% endblock%}
+{% block form %}
+    <div class ="form-group row">            
+        <table>
+            <div class="col-sm-10">
+                {{form.as_table}}
+            </div>
+        </table>
+    </div>
+{% endblock %}
+{% block buttons %}
+
+<button id="update-btn" class="btn-outline-dark btn-sm" OnClick="updateButton({{group.Id}});">Изменить</button>
+{% endblock %}
+

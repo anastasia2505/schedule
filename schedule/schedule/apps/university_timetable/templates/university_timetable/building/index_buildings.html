@@ -6,7 +6,7 @@
 {% block content %}
     
     <script>
-      TeacherElem.setAttribute('class', TeacherElem.getAttribute('class')+' active');
+      BuildingElem.setAttribute('class', BuildingElem.getAttribute('class')+' active');
     </script>
 
     <script>
@@ -38,12 +38,10 @@
             }
         });
 
-        function deletePressed(teacher_id){
-            console.log("pressed delete button");
-            console.log(teacher_id);
+        function deletePressed(id){
             $.ajax({
                 method: 'DELETE',
-                url: '/university_timetable/teachers/'+teacher_id+'/',
+                url: '/university_timetable/buildings/'+id+'/',
                 statusCode: { 
                     404: function(){ 
                         alert( "page not found" );
@@ -59,21 +57,20 @@
                     alert('Object deleted!');
                 },
             });
-            console.log('exit from function');
         }
     </script>
     
     <br />
     <br />
     <br />
-    <h1  align="center">Преподаватели</h1>
+    <h1  align="center">Корпуса</h1>
     <hr noshade="noshade" width="80%" color="#d0d0d0" />
     
 
     <div class="container-fluid">
         <div class="row jjustify-content-start">
             <div class="col-sm-auto  align-self-start "> 
-                <a href="{% url 'university_timetable:teacher_create' %}" class="btn btn-outline-dark btn-sm" id="add_botton" >Добавить преподавателя</a>
+                <a href="{% url 'university_timetable:building_create' %}" class="btn btn-outline-dark btn-sm" id="add_botton" >Добавить корпус</a>
             </div> 
 
             <div class="col-sm-auto align-self-start"> 
@@ -82,8 +79,8 @@
                         Сортировка
                     </button>
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <a class="dropdown-item btn-outline-dark" href="{% url 'university_timetable:teachers'%}?filter=default">В алфавитном порядке</a>
-                        <a class="dropdown-item btn-outline-dark" href="{% url 'university_timetable:teachers'%}?filter=reverse">В обратном порядке</a>
+                        <a class="dropdown-item btn-outline-dark" href="{% url 'university_timetable:buildings'%}?filter=default">По возрастанию</a>
+                        <a class="dropdown-item btn-outline-dark" href="{% url 'university_timetable:buildings'%}?filter=reverse">По убыванию</a>
                     </div>
                 </div>
             </div> 
@@ -91,17 +88,18 @@
     </div>
     
     <br>
-    {% for  t in teaches_list %}
+
+    {% for  elem in building_list %}
     
         <div class="container-fluid">
             
             <div class="row">
                 <div class="col-sm">
-                    <p><a href="{% url 'university_timetable:teacher' t.PersonnelNumber %}">{{t.FirstName}} {{t.Patronymic}} {{t.LastName}}</a></p>
+                    <p><a href="{% url 'university_timetable:building' elem.NumberOfBuilding %}"> Корпус № {{elem.NumberOfBuilding}}</a></p>
                 </div>
                 
                 <div class="col-1">
-                    <a href="{% url 'university_timetable:teacher' t.PersonnelNumber %}" class="btn btn-outline-dark btn-sm" role="button" >
+                    <a href="{% url 'university_timetable:building' elem.NumberOfBuilding %}" class="btn btn-outline-dark btn-sm" role="button" >
                         Посмотреть 
                         <svg class="bi bi-eye-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10.5 8a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
@@ -110,7 +108,7 @@
                     </a>
                 </div>
                 <div class="col-1">
-                    <a href="{% url 'university_timetable:teacher_update' t.PersonnelNumber %}" class="btn btn-outline-dark btn-sm " role="button" >
+                    <a href="{% url 'university_timetable:building_update' elem.NumberOfBuilding %}" class="btn btn-outline-dark btn-sm " role="button" >
                         Изменить 
                         <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="change_id">
                         <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.266-1.265l1-3a1 1 0 01.242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z" clip-rule="evenodd"/>
@@ -120,7 +118,7 @@
                     
                 </div>
                 <div class="col-1">
-                    <button class="btn btn-outline-dark btn-sm" OnClick="deletePressed({{t.PersonnelNumber}});" id="{{t.PersonnelNumber}}">
+                    <button class="btn btn-outline-dark btn-sm" OnClick="deletePressed({{elem.NumberOfBuilding}});" id="{{elem.NumberOfBuilding}}">
                         Удалить 
                         <svg class="bi bi-lock-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <rect width="11" height="9" x="2.5" y="7" rx="2"/>
