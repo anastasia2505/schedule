@@ -9,38 +9,44 @@ import re
 def default_email():
     return 'defaultemail@mail.ru'
 
-
+#simple validation example in a models 
 def validate_string(line):
-    
-    if re.findall(r'[^a-z,A-Z]',line):
+    if re.findall(r'[^a-z,A-Z,а-я,А-Я]',line):
         raise ValidationError(
-            'Invalide value: %(val)s\nMast include only latters',
+            'Invalide value: %(val)s\nMast include only letters',
             code='invalid', 
             params={'val':line})
 
-
-# class CalendarManager(models.Manager):
-#     def get_query_set(self):
-#         return super(CalendarManager, self).get_query_set().filter(DayOfWeek='')
+def validate_phone(str_):
+    if re.findall(r'[^0-9]+',str_):
+        raise ValidationError('Phone number should contain only numbers')
+    
+    if len(str_)!=11:
+        raise ValidationError('Phone number should contain 11 numbers')
 
 ###########################################################
 ###----------------Модель преподавателя
 ###########################################################
 class Teacher(models.Model):
-    PersonnelNumber = models.AutoField(  primary_key=True,
-                                            null=False,
-                                            unique=True,
-                                            blank=False,
-                                            db_column='Табельный номер сотрудника',
-                                            help_text='Табельный номер сотрудника - уникальное значение')
+    PersonnelNumber = models.AutoField(primary_key=True,null=False,
+        unique=True,blank=False,db_column='Табельный номер сотрудника',
+        help_text='Табельный номер сотрудника - уникальное значение')
     #blank=False - обязательное поле
-    FirstName = models.CharField(max_length=20, null=False, blank=False, db_column='Имя преподавателя', validators=[validate_string])
-    Patronymic = models.CharField(max_length=20, null=False, db_column='Отчество', blank=False, validators=[validate_string])
-    LastName = models.CharField(max_length=20, null=False, blank=False, db_column='Фамилия преподавателя', validators=[validate_string])
-    TeacherPosition = models.CharField(max_length=20, null=False, blank=False, db_column='Должность преподавателя', validators=[validate_string])
-    PhoneNumber = models.CharField(max_length=11, null=False, unique=True, blank=False, db_column='Номер телефона')
-    Email = models.CharField(max_length=30,null=False, unique=True, blank=False, default=default_email(), db_column='email', validators=[validate_email])
-    Department = models.CharField(max_length=50, null=False, blank=False, db_column='Кафедра', validators=[validate_string])
+    FirstName = models.CharField(max_length=20,null=False,blank=False, 
+        db_column='Имя преподавателя',validators=[validate_string])
+    Patronymic = models.CharField(max_length=20, null=False, 
+        db_column='Отчество', blank=False, validators=[validate_string])
+    LastName = models.CharField(max_length=20,null=False,blank=False, 
+        db_column='Фамилия преподавателя', validators=[validate_string])
+    TeacherPosition = models.CharField(max_length=20,null=False, 
+        blank=False,db_column='Должность преподавателя',validators=[validate_string])
+    PhoneNumber = models.CharField(max_length=11,null=False,unique=True, 
+        blank=False, db_column='Номер телефона',validators=[validate_phone])
+    Email = models.CharField(max_length=30,null=False, unique=True,
+        blank=False, default=default_email(), db_column='email', 
+        validators=[validate_email])
+    Department = models.CharField(max_length=50, null=False, blank=False, 
+        db_column='Кафедра', validators=[validate_string])
 
     disciplines = models.ManyToManyField('Discipline', related_name='teachers')
     groups = models.ManyToManyField('GroupInInstitute', related_name='teachers')
@@ -60,6 +66,7 @@ class Teacher(models.Model):
     class Meta:
         verbose_name = 'Преподаватель'
         verbose_name_plural='Преподаватели'
+        unique_together=('FirstName', 'Patronymic', 'LastName', 'PhoneNumber')
 
 ###########################################################
 ###----------------Модель пары
@@ -85,29 +92,20 @@ class Pair(models.Model):
 ###----------------Модель дисциплины
 ###########################################################
 class Discipline(models.Model):
-    Id=models.AutoField(
-                        db_column='Код дисциплины', 
-                        primary_key=True, 
-                        verbose_name="Код дисциплины")
-    Name = models.CharField(
-                        db_column='Название дисциплины',
-                        max_length=60, null=False, 
-                        verbose_name="Название дисциплины")
+    Id=models.AutoField(db_column='Код дисциплины',primary_key=True, 
+        verbose_name="Код дисциплины")
+    Name = models.CharField(db_column='Название дисциплины',
+        max_length=60, null=False, verbose_name="Название дисциплины",
+        validators=[validate_string])
     AcademicHours = models.IntegerField( 
-                                        db_column='Количество академических часов', 
-                                        null=False, 
-                                        default=0,
-                                        verbose_name='Количество академических часов',
-                                        )
-    IntermediateCertificationForm = models.CharField(
-                                                    max_length=20,
-                                                    db_column='Форма промежуточной аттестации',
-                                                    null=False, 
-                                                    default='',
-                                                    choices={('экз', 'экзамен'),
-                                                            ('з', 'зачет'),
-                                                            ('зо', 'зачет с оценкой')},
-                                                    verbose_name="Форма промежуточной аттестации")
+        db_column='Количество академических часов', 
+        null=False, default=0,verbose_name='Количество академических часов',)
+    IntermediateCertificationForm = models.CharField(max_length=20,
+        db_column='Форма промежуточной аттестации',null=False, 
+        default='',choices={('экз', 'экзамен'),
+                            ('з', 'зачет'),
+                            ('зо', 'зачет с оценкой')},
+        verbose_name="Форма промежуточной аттестации")
 
     objects=models.Manager()
 
@@ -125,10 +123,14 @@ class Discipline(models.Model):
 ###----------------Модель группы
 ###########################################################
 class GroupInInstitute(models.Model):
-    GroupName = models.CharField(max_length=15, primary_key=True)
+    Id=models.AutoField(
+                        #db_column='Код группы', 
+                        primary_key=True, 
+                        verbose_name="Код группы")
+    GroupName = models.CharField(max_length=15, validators=[validate_string])
     NumberOfPeople = models.IntegerField(null=False, db_column='Количество человек в группе')
-    Institute = models.CharField(max_length=60, null=False, db_column='Институт')
-    Specialty = models.CharField(max_length=60, null=False, db_column='Специальность')
+    Institute = models.CharField(max_length=60, null=False, db_column='Институт', validators=[validate_string])
+    Specialty = models.CharField(max_length=60, null=False, db_column='Специальность', validators=[validate_string])
     FormOfTraining = models.CharField(max_length=12, null=False, db_column='Форма обучения', choices={
         ('о','очная'), ('з','заочная'),('оз','очно-заочная')})
     SemesterNumber = models.IntegerField(null=False, db_column='Номер семестра')
@@ -153,6 +155,7 @@ class GroupInInstitute(models.Model):
         verbose_name = 'Группа'
         verbose_name_plural='Группы'
 
+#TODO: скорее всего убрать академический план
 ###########################################################
 ###----------------Модель академического плана
 ###########################################################
@@ -183,9 +186,9 @@ class Building(models.Model):
     def __str__(self):
         return '{}'.format(self.NumberOfBuilding)
 
-    def get_absolute_url(self):
-        return reverse("university_timetable.views.building_rooms", kwargs={"pk": self.pk})
-        #return "/university_timetable/buildings/%i/" % self.NumberOfBuilding
+    # def get_absolute_url(self):
+    #     return reverse("university_timetable.views.building_rooms", kwargs={"pk": self.pk})
+    #     #return "/university_timetable/buildings/%i/" % self.NumberOfBuilding
 
     class Meta:
         verbose_name = 'Корпус'
