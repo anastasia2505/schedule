@@ -43,7 +43,7 @@ class LectureRoomForm(ModelForm):
                 code='invalid',
                 params={'value': data},)
 
-        if data[1] not in range(1,6):
+        if int(str(data)[1]) not in range(1,6):
             raise ValidationError(_('некорректный номер аудитории: %(value)s (максимум 5 этажей)'),
                 code='invalid',
                 params={'value': data},)
