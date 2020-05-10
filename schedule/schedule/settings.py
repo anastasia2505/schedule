@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os, sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(__file__)
 
 sys.path.insert(0,os.path.join(PROJECT_ROOT,'apps'))
@@ -52,7 +52,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'university_timetable.middleware.HttpPostTunnelingMiddleware',
+    #'university_timetable.middleware.HttpPostTunnelingMiddleware',
     'django.middleware.security.SecurityMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -136,5 +136,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT=os.path.join(PROJECT_ROOT, 'static')
+
+#TODO: need to fix work with static files
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, "apps/university_timetable/static"),
+]
+
+#MEDIA_ROOT = os.path.join(BASE_DIR, "media") - для файлов, которые загружают пользователи сайта
+#MEDIA_URL = '/media/'
 
 #SESSION_COOKIE_HTTPONLY=False
