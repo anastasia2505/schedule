@@ -1,4 +1,4 @@
-from django.forms import ModelForm, NullBooleanField, ValidationError
+from django.forms import ModelForm, NullBooleanField, ValidationError, ModelMultipleChoiceField
 from .models import Teacher, Discipline, Pair, GroupInInstitute, LectureRoom, Building, Calendar
 from django.core import validators
 from django.utils.translation import ugettext_lazy as _ 
@@ -8,11 +8,28 @@ class TeacherForm(ModelForm):
         model=Teacher
         fields=['FirstName', 'Patronymic','LastName','TeacherPosition','Department','PhoneNumber','Email',
                 'disciplines','groups','lecturerooms','calendars','pairs']
+        
+    def clean(self):
+        cleaned_data=super().clean()
+
+        if Teacher.objects.filter(FirstName=cleaned_data.get('FirstName'), \
+            Patronymic=cleaned_data.get('Patronymic'), LastName=cleaned_data.get('LastName'), \
+            PhoneNumber=cleaned_data.get('PhoneNumber')).exists():
+            raise ValidationError(_('Преподаватель %(surname)s %(name)s %(patronymic)s  уже существует'),
+                code='invalid',
+                params={'surname': cleaned_data.get('Lastname'),
+                        'name': cleaned_data.get('FirstName'),
+                        'patronymic': cleaned_data.get('Patronymic')},)
+
+        return cleaned_data
             
 class DisciplineForm(ModelForm):
     class Meta:
         model=Discipline
         fields=['Name', 'AcademicHours', 'IntermediateCertificationForm'] 
+    
+    teachers=ModelMultipleChoiceField(queryset=Teacher.objects.all(), required=False, label="Преподаватели")
+    groups=ModelMultipleChoiceField(queryset=GroupInInstitute.objects.all(), required=False, label="Группы")
 
     def clean_AcademicHours(self):
         data=self.cleaned_data.get('AcademicHours')
@@ -64,9 +81,9 @@ class LectureRoomForm(ModelForm):
         cleaned_data=super().clean()
         
         lecture_room=cleaned_data.get('LectureRoomNumber')
-        building=cleaned_data.get('Building')
+        building=cleaned_data.get('NumberOfBuilding')
 
-        if lecture_room and building and lecture_room//1000!=building.NumberOfBuilding:
+        if lecture_room and building and lecture_room//1000!=building:
             raise ValidationError(_('Некорректный ввод, 1 цифра номера аудитории должна совпадать с номером корпуса'))
                 
         # if LectureRoom.objects.filter('')
@@ -89,12 +106,14 @@ class BuildingForm(ModelForm):
                 code='invalid',
                 params={'value': data},)
 
-        return self.cleaned_data
+        return data
 
 class GroupForm(ModelForm):
     class Meta:
         model=GroupInInstitute
         fields='__all__' 
+
+    teachers=ModelMultipleChoiceField(queryset=Teacher.objects.all(), required=False, label="Преподаватели")
 
     def clean_NumberOfPeople(self):
         data=self.cleaned_data.get('NumberOfPeople')

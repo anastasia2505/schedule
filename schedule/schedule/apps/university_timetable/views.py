@@ -19,7 +19,20 @@ class GroupView(View):
         if pk:
             try:
                 instance=GroupInInstitute.objects.get(pk=pk)
-                form=GroupForm(instance=instance)
+                #способ инициализации form(data={some data}, instance=instance) не работает, поэтому прописываю вручную
+                data={'GroupName': instance.GroupName,
+                    'NumberOfPeople': instance.NumberOfPeople,
+                    'Institute': instance.Institute,
+                    'Specialty':instance.Specialty,
+                    'FormOfTraining': instance.FormOfTraining,
+                    'SemesterNumber':instance.SemesterNumber,
+                    'CourseNumber':instance.CourseNumber,
+                    'pairs':instance.pairs.all(),
+                    'calendars':instance.calendars.all(),
+                    'lecturerooms': instance.lecturerooms.all(),
+                    'disciplines':instance.disciplines.all(),
+                    'teachers':instance.teacher_set.all()}
+                form=GroupForm(data)
             except GroupInInstitute.DoesNotExist:
                 raise Http404("Группа {} не найдена".format(pk))
             return render(request, 'university_timetable/group/group_detail.html', context={'form':form, 'group': instance})
@@ -54,7 +67,9 @@ class GroupView(View):
         if request.method=='POST':
             form=GroupForm(request.POST)
             if form.is_valid():
-                form.save()
+                instance=form.save()
+                for elem in form.cleaned_data.get('teachers'):
+                    instance.teacher_set.add(elem)
                 return HttpResponseRedirect(reverse('university_timetable:groups', args=()))
             else:
                 return render(request, 'university_timetable/group/create.html', context={'form':form,})
@@ -63,7 +78,19 @@ class GroupView(View):
     def update(request, pk=None):
         if request.method=='GET':
             instance=get_object_or_404(GroupInInstitute, pk=pk)
-            form=GroupForm(instance=instance)
+            data={'GroupName': instance.GroupName,
+                    'NumberOfPeople': instance.NumberOfPeople,
+                    'Institute': instance.Institute,
+                    'Specialty':instance.Specialty,
+                    'FormOfTraining': instance.FormOfTraining,
+                    'SemesterNumber':instance.SemesterNumber,
+                    'CourseNumber':instance.CourseNumber,
+                    'pairs':instance.pairs.all(),
+                    'calendars':instance.calendars.all(),
+                    'lecturerooms': instance.lecturerooms.all(),
+                    'disciplines':instance.disciplines.all(),
+                    'teachers':instance.teacher_set.all()}
+            form=GroupForm(data)
             return render(request, 'university_timetable/group/update.html', context={'form':form,
                                                                                             'group': instance})
         if request.method=='POST':
@@ -71,7 +98,9 @@ class GroupView(View):
             form=GroupForm(request.POST, instance=update_instance)
             
             if form.is_valid():
-                form.save()
+                update_instance=form.save()
+                for elem in form.cleaned_data.get('teachers'):
+                    update_instance.teacher_set.add(elem)
                 return HttpResponseRedirect(reverse('university_timetable:groups', args=()))
 
             return render(request, 'university_timetable/group/update.html', context={'form':form,
@@ -192,7 +221,12 @@ class DisciplineView(View):
         if discipline_id:
             try:
                 cur_discipline = Discipline.objects.get(pk=discipline_id)
-                disciplineform=DisciplineForm(instance=cur_discipline)
+                data={'teachers':cur_discipline.teacher_set.all(),
+                    'groups':cur_discipline.groupininstitute_set.all(),
+                    'Name':cur_discipline.Name,
+                    'AcademicHours': cur_discipline.AcademicHours,
+                    'IntermediateCertificationForm':cur_discipline.IntermediateCertificationForm}
+                disciplineform=DisciplineForm(data)
 
             except Discipline.DoesNotExist:
                 raise Http404("Дисциплина не найдена")
@@ -209,12 +243,14 @@ class DisciplineView(View):
 
         if request.method=='POST':
             form=DisciplineForm(request.POST)
-            if form.is_valid():
-                form.save()
-                # discipline=Discipline.objects.create(Name=request.POST.get('Name'),
-                #                                 AcademicHours=request.POST.get('AcademicHours'),
-                #                                 IntermediateCertificationForm=request.POST.get('IntermediateCertificationForm'))
             
+            if form.is_valid():
+                discipline=form.save()
+                for elem in form.cleaned_data.get('teachers'):
+                    discipline.teacher_set.add(elem)
+                for elem in form.cleaned_data.get('groups'):
+                    discipline.groupininstitute_set.add(elem)
+
             return HttpResponseRedirect(reverse('university_timetable:disciplines'))
     
     #@ensure_csrf_cookie
@@ -231,7 +267,12 @@ class DisciplineView(View):
     def update(request, discipline_id):
         if request.method=='GET':
             cur_discipline=get_object_or_404(Discipline, pk=discipline_id)
-            form=DisciplineForm(instance=cur_discipline)
+            data={'teachers':cur_discipline.teacher_set.all(),
+                'groups':cur_discipline.groupininstitute_set.all(),
+                'Name':cur_discipline.Name,
+                'AcademicHours': cur_discipline.AcademicHours,
+                'IntermediateCertificationForm':cur_discipline.IntermediateCertificationForm}
+            form=DisciplineForm(data)
             return render(request, 'university_timetable/discipline/update.html', context={'form':form,
                                                                                             'discipline': cur_discipline})
         if request.method=='POST':
@@ -240,11 +281,16 @@ class DisciplineView(View):
             
             if data_form.is_valid():
                 data_form.save()
+                for elem in data_form.cleaned_data.get('teachers'):
+                    discipline.teacher_set.add(elem)
+                for elem in data_form.cleaned_data.get('groups'):
+                    discipline.groupininstitute_set.add(elem)
+
                 # discipline.Name=request.PUT.get('Name')
                 # discipline.AcademicHours=request.PUT.get('AcademicHours')
                 # discipline.IntermediateCertificationForm=request.PUT.get('IntermediateCertificationForm')
                 # discipline.save()
-                
+                #discipline.save()
             #TODO:исправить переадресацию
             return HttpResponseRedirect(reverse('university_timetable:discipline', args=(discipline_id,)))
 
