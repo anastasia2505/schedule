@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
+from django.core.validators import validate_email, RegexValidator
 
 import re
 
@@ -11,7 +11,7 @@ def default_email():
 
 #simple validation example in a models 
 def validate_string(line):
-    if re.findall(r'[^a-z,A-Z,а-я,А-Я]',line):
+    if re.findall(r'[^a-z,A-Z,а-я,А-Я ]',line):
         raise ValidationError(
             'Invalide value: %(val)s\nMast include only letters',
             code='invalid', 
@@ -48,11 +48,11 @@ class Teacher(models.Model):
     Department = models.CharField(max_length=50, null=False, blank=False, 
         db_column='Кафедра', validators=[validate_string])
 
-    disciplines = models.ManyToManyField('Discipline', related_name='teachers')
-    groups = models.ManyToManyField('GroupInInstitute', related_name='teachers')
-    lecturerooms = models.ManyToManyField('LectureRoom', related_name='teachers')
-    calendars = models.ManyToManyField('Calendar', related_name='teachers')
-    pairs = models.ManyToManyField('Pair', related_name='teachers')
+    disciplines = models.ManyToManyField('Discipline')
+    groups = models.ManyToManyField('GroupInInstitute')
+    lecturerooms = models.ManyToManyField('LectureRoom')
+    calendars = models.ManyToManyField('Calendar')
+    pairs = models.ManyToManyField('Pair')
 
     objects=models.Manager()
 
@@ -66,7 +66,7 @@ class Teacher(models.Model):
     class Meta:
         verbose_name = 'Преподаватель'
         verbose_name_plural='Преподаватели'
-        unique_together=('FirstName', 'Patronymic', 'LastName', 'PhoneNumber')
+        #unique_together=('FirstName', 'Patronymic', 'LastName', 'PhoneNumber')
 
 ###########################################################
 ###----------------Модель пары
@@ -127,7 +127,7 @@ class GroupInInstitute(models.Model):
                         #db_column='Код группы', 
                         primary_key=True, 
                         verbose_name="Код группы")
-    GroupName = models.CharField(max_length=15, validators=[validate_string])
+    GroupName = models.CharField(max_length=15, validators=[RegexValidator(regex=r'[^a-z,A-Z,а-я,А-Я, ,0-9,-]', message='Некорректное название группы', inverse_match=True)])
     NumberOfPeople = models.IntegerField(null=False, db_column='Количество человек в группе')
     Institute = models.CharField(max_length=60, null=False, db_column='Институт', validators=[validate_string])
     Specialty = models.CharField(max_length=60, null=False, db_column='Специальность', validators=[validate_string])
@@ -136,11 +136,11 @@ class GroupInInstitute(models.Model):
     SemesterNumber = models.IntegerField(null=False, db_column='Номер семестра')
     CourseNumber = models.IntegerField(null=False, db_column='Номер курса')
 
-    pairs = models.ManyToManyField(Pair, related_name='groups')
-    calendars = models.ManyToManyField('Calendar', related_name='groups')
-    lecturerooms = models.ManyToManyField('LectureRoom', related_name='groups')
-    disciplines = models.ManyToManyField(Discipline, related_name='groups')
-    plane=models.OneToOneField('AcademicPlan',on_delete=models.CASCADE)
+    pairs = models.ManyToManyField('Pair')
+    calendars = models.ManyToManyField('Calendar')
+    lecturerooms = models.ManyToManyField('LectureRoom')
+    disciplines = models.ManyToManyField('Discipline')
+    #plane=models.OneToOneField('AcademicPlan',on_delete=models.CASCADE)
 
     objects=models.Manager()
 
@@ -159,20 +159,20 @@ class GroupInInstitute(models.Model):
 ###########################################################
 ###----------------Модель академического плана
 ###########################################################
-class AcademicPlan(models.Model):
-   id = models.AutoField(primary_key=True, db_column='Код академического плана')
+# class AcademicPlan(models.Model):
+#    id = models.AutoField(primary_key=True, db_column='Код академического плана')
 
-   disciplines = models.ManyToManyField(Discipline, related_name='academicplan')
+#    disciplines = models.ManyToManyField(Discipline, related_name='academicplan')
 
-   objects=models.Manager()
+#    objects=models.Manager()
    
-   def __str__(self):
-       return "Академический план № {}".format(self.id)
+#    def __str__(self):
+#        return "Академический план № {}".format(self.id)
 
 
-   class Meta:
-        verbose_name = 'Академический план'
-        verbose_name_plural='Академические планы'
+#    class Meta:
+#         verbose_name = 'Академический план'
+#         verbose_name_plural='Академические планы'
 
 ###########################################################
 ###----------------Модель корпуса
