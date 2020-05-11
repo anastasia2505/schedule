@@ -38,3 +38,4 @@ class PairForms(ModelForm):
         model=Pair
         fields=['PairStart', 'PairStop']
         #field=[str(f.name) for f in Pair._meta.get_all_field_names()]s
+

@@ -12,7 +12,7 @@ def default_email():
 
 def validate_string(line):
     
-    if re.findall(r'[^a-z,A-Z]',line):
+    if re.findall(r'[^a-z,A-Z,а-я,А-Я]',line):
         raise ValidationError(
             'Invalide value: %(val)s\nMast include only latters',
             code='invalid', 

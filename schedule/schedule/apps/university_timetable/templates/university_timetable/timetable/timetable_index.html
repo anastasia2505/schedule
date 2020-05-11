@@ -76,37 +76,17 @@
     <h1  align="center">Расписание</h1>
     <hr noshade="noshade" width="80%" color="#d0d0d0" />
 
+    <h3  align="center">Выберите группу:</h3>
 
+    {% for name in group_list %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm">
+                   <p><a href="#">{{name.GroupName}}</a></p>
+                </div>
 
-<div class="container-fluid">
-    <table class = "table table-bordered table-hover">
-<thead class = "thead-light">
-    <tr>
-      <th scope="col"></th>
-      <th scope="col">Понедельник</th>
-      <th scope="col">Вторник</th>
-      <th scope="col">Среда</th>
-      <th scope="col">Четверг</th>
-      <th scope="col">Пятница</th>
-      <th scope="col">Суббота</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-
-    </tr>
-    <tr>
-
-    </tr>
-    <tr>
-
-    </tr>
-  </tbody>
-    </table>
-</div>
-
-
-
+            </div>
+        </div>
+    {% endfor %}
 
 {% endblock%}

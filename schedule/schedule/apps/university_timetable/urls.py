@@ -3,7 +3,9 @@ from . import views
 
 app_name='university_timetable'#пространство имен
 urlpatterns = [
-    path('', views.start_page, name='start_page'),
+    path('', views.StartView.as_view(), name='start_page'),
+    path('<int:group_name>/', views.StartView.as_view(), name='timetable_detail'),
+
     #path('groups/', views.groups, name='groups'),
     path('groups/', views.GroupsView.as_view(), name='groups'),
     
