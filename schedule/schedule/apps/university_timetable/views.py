@@ -41,7 +41,7 @@ class GroupView(View):
                 return GroupInInstitute.objects.all().order_by('GroupName')
             
             def reverse():
-                return Building.objects.all().order_by('-GroupName')
+                return GroupInInstitute.objects.all().order_by('-GroupName')
             
             filters={'default': default,
                     'reverse': reverse,}
@@ -179,7 +179,7 @@ class TeacherView(View):
         if request.method=='POST':
             update_instance=get_object_or_404(Teacher, pk=teacher_id)
             data_form=TeacherForm(request.POST, instance=update_instance)
-            
+
             #product.name = 'Name changed again'
             #product.save(update_fields=['name'])
             if data_form.is_valid():
@@ -200,7 +200,8 @@ class TeacherView(View):
                 # teacher.pairs.add(request.POST.get('pairs'))
 
                 # teacher.save(force_update=True)
-                data_form.save()
+                if data_form.has_changed():
+                    data_form.save()
             return HttpResponseRedirect(reverse('university_timetable:teacher', args=(teacher_id,)))
 
     #@ensure_csrf_cookie
@@ -366,15 +367,16 @@ class LectureroomView(View):
             data_form=LectureRoomForm(request.POST, instance=update_instance)
             
             if data_form.is_valid():
-                update_instance.Capacity=request.POST.get('Capacity')
-                update_instance.save()
+                #update_instance.Capacity=data_form..get('Capacity')
+                #update_instance.save()
+                if data_form.has_changed():
+                    data_form.save()
                 #obj.refresh_from_db()
                 #TODO:исправить переадресацию
                 return HttpResponseRedirect(reverse('university_timetable:lecturerooms', args=()))
             else: 
-                pass
-                #return render(request, 'university_timetable/lectureroom/update.html', context={'form': data_form, 'lectureroom': update_instance})                                                                              'lectureroom': update_instance})
-
+                return render(request, 'university_timetable/lectureroom/update.html', context={'form':data_form,
+                                                                                            'lectureroom': update_instance})
 
 class BuildingView(View):
     def get(self, request, pk=None):
