@@ -83,7 +83,7 @@ class LectureRoomForm(ModelForm):
         lecture_room=cleaned_data.get('LectureRoomNumber')
         building=cleaned_data.get('NumberOfBuilding')
 
-        if lecture_room and building and lecture_room//1000!=building:
+        if lecture_room and building and lecture_room//1000!=building.NumberOfBuilding:
             raise ValidationError(_('Некорректный ввод, 1 цифра номера аудитории должна совпадать с номером корпуса'))
 
         # if LectureRoom.objects.filter('')

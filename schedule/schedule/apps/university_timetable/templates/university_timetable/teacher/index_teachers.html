@@ -55,61 +55,51 @@
                         alert("bad request")
                     } 
                 },
-                success: function() {
-                    alert('Object deleted!');
+                success: function(){
+                    addNotification();
                 },
             });
             console.log('exit from function');
         }
     </script>
     
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="{% url 'university_timetable:start_page'%}">Расписание</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsDefault" aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <br />
+    <br />
+    <br />
 
-            <div class="collapse navbar-collapse" id="navbarsDefault">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'university_timetable:teachers'%}">Преподаватели <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'university_timetable:groups'%}">Группы</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'university_timetable:disciplines'%}">Дисциплины</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{% url 'university_timetable:lecturerooms'%}" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Аудитории</a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown01">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                </form>
-            </div>
-    </nav>
-    
-    <br />
-    <br />
-    <br />
-    <h1  align="center">Преподаватели</h1>
-    <hr noshade="noshade" width="80%" color="#d0d0d0" />
-    
+    <script>
+        function addNotification(){
+            var div = document.createElement("div");
+            div.setAttribute("class", "alert alert-info alert-dismissible fade show");
+            div.setAttribute("role","alert");
 
-    <div class="container-fluid">
-        <div class="row jjustify-content-start">
-            <div class="col-sm-auto  align-self-start ">
+            div.innerHTML="<h6>Запись удалена</h6><hr><p>Пожалуйста, обновите страницу</p>";
+            //div.appendChild(text);
+
+            var btn=document.createElement("button");
+            btn.setAttribute("type","button");
+            btn.setAttribute("class", "close");
+            btn.setAttribute("data-dismiss","alert");
+            btn.setAttribute("aria-label","Close");
+
+            var span=document.createElement("span");
+            span.setAttribute("aria-hidden","true");
+            span.innerHTML="&times;";
+            btn.appendChild(span);
+            div.appendChild(btn);
+
+            element=document.getElementById("container_1");
+            element.after( div);
+    }
+    </script>
+
+    <div class="container-fluid" id="container_1">
+        <div class="row jjustify-content-start" id="row_1">
+            <div class="col-sm-auto  align-self-start "> 
                 <a href="{% url 'university_timetable:teacher_create' %}" class="btn btn-outline-dark btn-sm" id="add_botton" >Добавить преподавателя</a>
-            </div>
+            </div> 
 
-            <div class="col-sm-auto align-self-start">
+            <div class="col-sm-auto align-self-start"> 
                 <div class="btn-group-sm  dropdown" role="group">
                     <button id="default" type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Сортировка
@@ -119,21 +109,19 @@
                         <a class="dropdown-item btn-outline-dark" href="{% url 'university_timetable:teachers'%}?filter=reverse">В обратном порядке</a>
                     </div>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
     
     <br>
-    {% for  t in teaches_list %}
     
-        <div class="container-fluid">
-            
-            <div class="row">
-                <div class="col-sm">
-                    <p><a href="{% url 'university_timetable:teacher' t.PersonnelNumber %}">{{t.FirstName}} {{t.Patronymic}} {{t.LastName}}</a></p>
-                </div>
-                
-                <div class="col-1">
+    <div class="container-fluid">
+        <table class="table table-striped table-hover">
+            <tbody>
+            {% for  t in teaches_list %}
+            <tr>
+                <td><p><a href="{% url 'university_timetable:teacher' t.PersonnelNumber %}">{{t.FirstName}} {{t.Patronymic}} {{t.LastName}}</a></p></td>
+                <td class="align-middle text-right">
                     <a href="{% url 'university_timetable:teacher' t.PersonnelNumber %}" class="btn btn-outline-dark btn-sm" role="button" >
                         Посмотреть 
                         <svg class="bi bi-eye-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -141,8 +129,6 @@
                         <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" clip-rule="evenodd"/>
                         </svg>
                     </a>
-                </div>
-                <div class="col-1">
                     <a href="{% url 'university_timetable:teacher_update' t.PersonnelNumber %}" class="btn btn-outline-dark btn-sm " role="button" >
                         Изменить 
                         <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="change_id">
@@ -150,9 +136,6 @@
                         <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 00.5.5H4v.5a.5.5 0 00.5.5H5v.5a.5.5 0 00.5.5H6v-1.5a.5.5 0 00-.5-.5H5v-.5a.5.5 0 00-.5-.5H3z" clip-rule="evenodd"/>
                         </svg>
                     </a>
-                    
-                </div>
-                <div class="col-1">
                     <button class="btn btn-outline-dark btn-sm" OnClick="deletePressed({{t.PersonnelNumber}});" id="{{t.PersonnelNumber}}">
                         Удалить 
                         <svg class="bi bi-lock-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -160,12 +143,10 @@
                         <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 117 0v3h-1V4a2.5 2.5 0 00-5 0v3h-1V4z" clip-rule="evenodd"/>
                         </svg>
                     </button>
-                </div>
-            </div>
-         </div>
-
-    
-
-    {% endfor %}
-    
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock%}

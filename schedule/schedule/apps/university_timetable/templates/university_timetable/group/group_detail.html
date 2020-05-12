@@ -15,7 +15,6 @@
                         Назад 
                 </a>
             </div>
-            <div class="col-6">Группа</div>
         </div>
     </div>
     <br>
@@ -24,17 +23,27 @@
         {% block form_title %}<form action="{% url 'university_timetable:group' group.Id %}"  method="get">{%endblock%}
             {% csrf_token %}
             {% block form %}
-            <div class ="form-group row">            
-                <table>
-                    {% for field in form %}
-                        <tr>
-                                <th><b> {{field.label_tag}} </b></th>
-                                <td> {{field.value}} </td>
-                                
-                        </tr>
-                        <div class="error">{{field.errors}}</div>
-                    {% endfor %}
-                </table>
+
+            <div class="row">
+                <div class="col-auto">
+                    {{ form.non_field_errors }}
+                    <table class="table table-active">
+                        <tbody>
+                        {% for field in form %}
+                            <tr>                            
+                                <td>{{ field.label_tag }}</td> 
+                                <td>
+                                {{ field.errors }}
+                                {{ field }}
+                                </td>
+                                {% if field.help_text %}
+                                    <p class="help">{{ field.help_text|safe }}</p>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             {% endblock %}
             

@@ -36,16 +36,16 @@ class GroupView(View):
             except GroupInInstitute.DoesNotExist:
                 raise Http404("Группа {} не найдена".format(pk))
             return render(request, 'university_timetable/group/group_detail.html', context={'form':form, 'group': instance})
-        else:
+        else:    
             def default():
                 return GroupInInstitute.objects.all().order_by('GroupName')
-
+            
             def reverse():
-                return Building.objects.all().order_by('-GroupName')
-
+                return GroupInInstitute.objects.all().order_by('-GroupName')
+            
             filters={'default': default,
                     'reverse': reverse,}
-
+            
             filter=request.GET.get('filter', 'default')
             list_=filters.get(filter)
 
@@ -58,7 +58,7 @@ class GroupView(View):
         except GroupInInstitute.DoesNotExist:
             raise Http404("Группа {} не найдена".format(pk))
         return render(request, 'university_timetable/group/index_groups.html', context={'group_list': GroupInInstitute.objects.all()})
-
+    
     @staticmethod
     def create(request):
         if request.method=='GET':
@@ -96,7 +96,7 @@ class GroupView(View):
         if request.method=='POST':
             update_instance=get_object_or_404(GroupInInstitute, pk=pk)
             form=GroupForm(request.POST, instance=update_instance)
-
+            
             if form.is_valid():
                 update_instance=form.save()
                 for elem in form.cleaned_data.get('teachers'):
@@ -104,7 +104,7 @@ class GroupView(View):
                 return HttpResponseRedirect(reverse('university_timetable:groups', args=()))
 
             return render(request, 'university_timetable/group/update.html', context={'form':form,
-                                                                                        'group': update_instance})
+                                                                                        'group': update_instance})        
 
 
 
@@ -121,18 +121,18 @@ class TeacherView(View):
             return render(request, 'university_timetable/teacher/teacher_detail.html',
                     context={'form': form,
                             'cur_teacher': teacher})
-        else:
-
+        else:  
+            
             def default():
                 return Teacher.objects.all().order_by('FirstName', 'Patronymic', 'LastName')
 
             def reverse():
                 return Teacher.objects.all().order_by('-FirstName', '-Patronymic', '-LastName')
-
+            
 
             filters={'default' : default,
                     'reverse' : reverse,}
-
+  
             teachers_list=filters[request.GET.get('filter', 'default')]()
 
             return render(request, 'university_timetable/teacher/index_teachers.html', context={'teaches_list': teachers_list,})
@@ -164,7 +164,7 @@ class TeacherView(View):
                 # teacher.pairs.add(request.POST.get('pairs'))
                 # teacher.save()
                 data_form.save()
-            return HttpResponseRedirect(reverse('university_timetable:teachers'))
+            return HttpResponseRedirect(reverse('university_timetable:teachers'))           
 
     @staticmethod
     def update(request, teacher_id):
@@ -200,7 +200,8 @@ class TeacherView(View):
                 # teacher.pairs.add(request.POST.get('pairs'))
 
                 # teacher.save(force_update=True)
-                data_form.save()
+                if data_form.has_changed():
+                    data_form.save()
             return HttpResponseRedirect(reverse('university_timetable:teacher', args=(teacher_id,)))
 
     #@ensure_csrf_cookie
@@ -243,7 +244,7 @@ class DisciplineView(View):
 
         if request.method=='POST':
             form=DisciplineForm(request.POST)
-
+            
             if form.is_valid():
                 discipline=form.save()
                 for elem in form.cleaned_data.get('teachers'):
@@ -304,21 +305,21 @@ class LectureroomView(View):
             except LectureRoom.DoesNotExist:
                 raise Http404("Аудитория {} не найдена".format(pk))
             return render(request, 'university_timetable/lectureroom/lectureroom_detail.html', context={'form':form, 'lectureroom': instance})
-        else:
+        else:    
             def default():
                 return LectureRoom.objects.all().order_by('LectureRoomNumber')
-
+            
             def reverse():
                 return LectureRoom.objects.all().order_by('-LectureRoomNumber')
-
+            
             filters={'default': default,
                     'reverse': reverse,}
-
+            
             filter=request.GET.get('filter', 'default')
             list_=filters.get(filter)
 
             return render(request,'university_timetable/lectureroom/index_lecturerooms.html',context={'lecturerooms_list':list_})
-
+    
     #TODO: fix page after deleting an object
     def delete(self, request, pk):
         try:
@@ -326,7 +327,7 @@ class LectureroomView(View):
         except:
             raise Http404("Аудитория {} не найдена".format(pk))
         return render(request, 'university_timetable/lectureroom/index_lecturerooms.html', context={'lectureroom_list': LectureRoom.objects.all()})
-
+    
     @staticmethod
     def create(request):
         if request.method=='GET':
@@ -343,12 +344,12 @@ class LectureroomView(View):
     # def put(self, request, pk):
     #     update_instance=get_object_or_404(LectureRoom, pk=pk)
     #     data_form=LectureRoomForm(request.body)
-
+        
     #     if data_form.is_valid():
     #         update_instance.Capacity=request.body['Capacity']
     #         update_instance.save()
     #         #obj.refresh_from_db()
-    #     else:
+    #     else: 
     #         return render(request, 'university_timetable/lectureroom/update.html', context={'form':data_form,
     #                                                                                    'lectureroom': update_instance})
     #
@@ -364,17 +365,18 @@ class LectureroomView(View):
         if request.method=='POST':
             update_instance=get_object_or_404(LectureRoom, pk=pk)
             data_form=LectureRoomForm(request.POST, instance=update_instance)
-
+            
             if data_form.is_valid():
-                update_instance.Capacity=request.POST.get('Capacity')
-                update_instance.save()
+                #update_instance.Capacity=data_form..get('Capacity')
+                #update_instance.save()
+                if data_form.has_changed():
+                    data_form.save()
                 #obj.refresh_from_db()
                 #TODO:исправить переадресацию
                 return HttpResponseRedirect(reverse('university_timetable:lecturerooms', args=()))
-            else:
-                pass
-                #return render(request, 'university_timetable/lectureroom/update.html', context={'form': data_form, 'lectureroom': update_instance})                                                                              'lectureroom': update_instance})
-
+            else: 
+                return render(request, 'university_timetable/lectureroom/update.html', context={'form':data_form,
+                                                                                            'lectureroom': update_instance})
 
 class BuildingView(View):
     def get(self, request, pk=None):
@@ -388,13 +390,13 @@ class BuildingView(View):
         else:    
             def default():
                 return Building.objects.all().order_by('NumberOfBuilding')
-
+            
             def reverse():
                 return Building.objects.all().order_by('-NumberOfBuilding')
-
+            
             filters={'default': default,
                     'reverse': reverse,}
-
+            
             filter=request.GET.get('filter', 'default')
             list_=filters.get(filter)
 
@@ -407,7 +409,7 @@ class BuildingView(View):
         except Building.DoesNotExist:
             raise Http404("корпус {} не найден".format(pk))
         return render(request, 'university_timetable/building/index_buildings.html', context={'building_list': Building.objects.all()})
-
+    
     @staticmethod
     def create(request):
         if request.method=='GET':
@@ -431,14 +433,14 @@ class BuildingView(View):
         if request.method=='POST':
             update_instance=get_object_or_404(Building, pk=pk)
             form=BuildingForm(request.POST, instance=update_instance)
-
+            
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(reverse('university_timetable:buildings', args=()))
 
             return render(request, 'university_timetable/building/update.html', context={'form':form,
                                                                                         'building': update_instance})
-
+            
 class PairView(View):
     #шаблона нет
     def get(self, request, pair_id=None):

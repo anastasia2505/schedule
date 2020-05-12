@@ -1,10 +1,42 @@
-{% extends 'university_timetable/teacher/teacher_detail.html'%}
+{% extends 'university_timetable/index_base.html' %}
 
-
+{% block content %}
+<br>
+<br>
+<br>
+<div class="row">
+    <div class="col-1 text-center">
+        <a href="{% url 'university_timetable:teachers' %}" class="btn btn-outline-dark btn-sm" role="button" >
+                Назад 
+        </a>
+    </div>
+</div>
+<br>
+<div class="container-fluid text-left">
 {% block form_title %}<form action="{% url 'university_timetable:teacher_update' cur_teacher.PersonnelNumber %}" method="post">{% endblock%}
-    
-{% block buttons %}
-
-<input class="btn-outline-dark btn-sm" type="submit"  value="Изменить">
-{% endblock %}
-
+            {% csrf_token %}
+            <div class="row">
+            <div class="col-auto">
+            <table class="table table-active">
+                <tbody>
+                {% for field in form %}
+                    <tr>          
+                        <td>{{ field.label_tag }}</td> 
+                        <td>
+                        {{ field.errors }}
+                        {{ field }}
+                        </td>
+                        {% if field.help_text %}
+                            <p class="help">{{ field.help_text|safe }}</p>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            
+            {% block buttons %}<input class="btn-outline-dark btn-sm" type="submit"  value="Изменить">{% endblock %}
+            </div>
+            </div>
+        </form>
+</div>
+{%endblock%}
