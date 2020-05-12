@@ -465,20 +465,18 @@ def my_custom_page_not_found_view(request, exception):
 
 class StartView(View):
 
-    def get(self, request, group_name=None):
-        if group_name:
+    def get(self, request, pk=None):
+        if pk:
             try:
-                groups_list = GroupInInstitute.objects.all().order_by('GroupName')
-                pair_list_group = GroupInInstitute.objects.get(GroupName=groups_list[group_name]).pairs.all()
-                teacher_list = Teacher.objects.all().filter(groups__GroupName=groups_list[group_name])
-                data = {"groups_list": groups_list,
+                group = GroupInInstitute.objects.get(pk=pk)
+                pair_list_group = GroupInInstitute.objects.get(Id=pk.pairs.all())
+                teacher_list = Teacher.objects.all().filter(groups__Id=pk)
+                data = {"group": group,
                         "pair_list_group": pair_list_group,
-                        "gp":gp,
                         "teacher_list": teacher_list}
             except GroupInInstitute.DoesNotExist:
-                raise Http404("Группа не найдена")
+                raise Http404("Группа {} не найдена".format(pk))
             return render(request, 'university_timetable/timetable/timetable_detail.html', context=data)
         else:
-            group_list = GroupInInstitute.objects.all()
-            return render(request, 'university_timetable/timetable/timetable_index.html', context={'group_list': group_list})
-
+            groups_list = GroupInInstitute.objects.all()
+            return render(request, 'university_timetable/timetable/timetable_index.html', context={'groups_list': groups_list})

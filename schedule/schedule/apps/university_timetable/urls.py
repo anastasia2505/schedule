@@ -5,7 +5,7 @@ from django.conf import settings
 
 app_name='university_timetable'#пространство имен
 urlpatterns = [
-    path('', views.StartView.as_view(), name='start_page'),
+    path('', views.StartView.as_view(), name='timetable_index'),
     path('<int:group_name>/', views.StartView.as_view(), name='timetable_detail'),
 
     #Groups
