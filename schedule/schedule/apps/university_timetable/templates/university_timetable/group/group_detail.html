@@ -4,30 +4,29 @@
 {% endblock %}
 
 {% block content %}
-    
+
     <br>
     <br>
     <br>
      <div class="container-fluid">
         <div class="row">
             <div class="col-3">
-                <a href="{% url 'university_timetable:disciplines' %}" class="btn btn-outline-dark btn-sm" role="button" >
+                <a href="{% url 'university_timetable:groups' %}" class="btn btn-outline-dark btn-sm" role="button" >
                         Назад 
                 </a>
             </div>
-            <div class="col-6">Дисциплина</div>
+            <div class="col-6">Группа</div>
         </div>
     </div>
     <br>
     <div class="container-fluid">
     
-        {% block form_title %}<form action="{% url 'university_timetable:discipline' discipline.Id %}"  method="get">{%endblock%}
+        {% block form_title %}<form action="{% url 'university_timetable:group' group.Id %}"  method="get">{%endblock%}
             {% csrf_token %}
             {% block form %}
             <div class ="form-group row">            
                 <table>
                     {% for field in form %}
-                        {{ field.errors }}
                         <tr>
                                 <th><b> {{field.label_tag}} </b></th>
                                 <td> {{field.value}} </td>
