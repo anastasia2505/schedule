@@ -42,6 +42,7 @@
 
 
     <h2  align="center">{{group.GroupName}}</h2>
+
     <div class="container-fluid">
         <table class = "table table-bordered table-hover">
             <thead class = "thead-light">
@@ -875,6 +876,865 @@
                                         {%for room in teacher.lecturerooms.all%}
                                             {%for day in teacher.calendars.all %}
                                                 {%if day.TypeOfWeek == 'чн'%}
+                                                    {% if day.DayOfWeek == 'суб' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 7%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+    <div class="container-fluid">
+        <table class = "table table-bordered table-hover">
+            <thead class = "thead-light">
+                <tr>
+                    <th scope="col">НЧ</th>
+                    <th scope="col">Понедельник</th>
+                    <th scope="col">Вторник</th>
+                    <th scope="col">Среда</th>
+                    <th scope="col">Четверг</th>
+                    <th scope="col">Пятница</th>
+                    <th scope="col">Суббота</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pair_gr in pair_list_group %}
+                    {%if pair_gr.PairNumber == 1 %}
+                        <tr>
+                            <th scope="col">{{pair_gr.PairNumber}}</th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пон' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 1%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'вт' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 1%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'ср' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 1%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'чет' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 1%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пят' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 1%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'суб' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 1%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                        </tr>
+                    {%endif%}
+                    {%if pair_gr.PairNumber == 2%}
+                        <tr>
+                            <th scope="col">{{pair_gr.PairNumber}}</th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пон' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 2%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'вт' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 2%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'ср' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 2%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'чет' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 2%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пят' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 2%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'суб' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 2%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                        </tr>
+                    {%endif%}
+                    {%if pair_gr.PairNumber == 3%}
+                        <tr>
+                            <th scope="col">{{pair_gr.PairNumber}}</th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пон' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 3%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'вт' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 3%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'ср' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 3%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'чет' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 3%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пят' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 3%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'суб' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 3%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                        </tr>
+                    {%endif%}
+                    {%if pair_gr.PairNumber == 4%}
+                        <tr>
+                            <th scope="col">{{pair_gr.PairNumber}}</th>
+                            <th scope="col">
+                                 {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пон' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 4%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'вт' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 4%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'ср' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 4%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'чет' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 4%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пят' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 4%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'суб' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 4%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                        </tr>
+                    {%endif%}
+                    {%if pair_gr.PairNumber == 5%}
+                        <tr>
+                            <th scope="col">{{pair_gr.PairNumber}}</th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пон' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 5%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'вт' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 5%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'ср' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 5%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'чет' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 5%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пят' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 5%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'суб' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 5%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                        </tr>
+                    {%endif%}
+                    {%if pair_gr.PairNumber == 6%}
+                        <tr>
+                            <th scope="col">{{pair_gr.PairNumber}}</th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пон' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 6%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'вт' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 6%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'ср' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 6%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'чет' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 6%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пят' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 6%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'суб' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 6%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                        </tr>
+                    {%endif%}
+                    {%if pair_gr.PairNumber == 7%}
+                        <tr>
+                            <th scope="col">{{pair_gr.PairNumber}}</th>
+                            <th scope="col">
+                                {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пон' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 7%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                   {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'вт' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 7%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                   {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'ср' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 7%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                   {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'чет' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 7%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                   {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
+                                                    {% if day.DayOfWeek == 'пят' %}
+                                                        {%for pair in teacher.pairs.all%}
+                                                            {%if pair.PairNumber == 7%}
+                                                                {{room.LectureRoomNumber}} {{disc.Name}}, {{teacher.LastName}}
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        {%endfor%}
+                                    {%endfor%}
+                                {%endfor%}
+                            </th>
+                            <th scope="col">
+                                   {%for teacher in teacher_list%}
+                                    {%for disc in teacher.disciplines.all %}
+                                        {%for room in teacher.lecturerooms.all%}
+                                            {%for day in teacher.calendars.all %}
+                                                {%if day.TypeOfWeek == 'нч'%}
                                                     {% if day.DayOfWeek == 'суб' %}
                                                         {%for pair in teacher.pairs.all%}
                                                             {%if pair.PairNumber == 7%}

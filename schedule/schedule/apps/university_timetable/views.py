@@ -469,7 +469,7 @@ class StartView(View):
         if pk:
             try:
                 group = GroupInInstitute.objects.get(pk=pk)
-                pair_list_group = GroupInInstitute.objects.get(Id=pk).pairs.all()
+                pair_list_group = group.pairs.all()
                 teacher_list = Teacher.objects.all().filter(groups__Id=pk)
                 data = {"group": group,
                         "pair_list_group": pair_list_group,
